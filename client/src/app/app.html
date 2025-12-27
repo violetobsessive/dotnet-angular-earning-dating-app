@@ -1,7 +1,15 @@
-<h1>{{ title }}</h1>
+<div class="card bg-base-100 w-1/2 max-auto p-10 mt-10 shadow-xl">
+  <h1 class="text-3xl text-blue-500">{{ title }}</h1>
 
-<ul>
-  @for (member of members(); track member.id) {
-  <li>{{ member.id }} - {{ member.displayName }}</li>
-  }
-</ul>
+  <ul class="list">
+    @for (member of members(); track member.id) {
+    <li class="list-row items-center">
+      {{ member.id }} - {{ member.displayName }}
+      <img src="/user.png" alt="user avatar" class="size-12 rounded-box" />
+      <div>
+        {{ member.displayName }}
+      </div>
+    </li>
+    }
+  </ul>
+</div>
