@@ -4,6 +4,7 @@ using System.Text;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using API.Servicces;
 using Microsoft.AspNetCore.Mvc;
@@ -32,13 +33,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
-        return new UserDto
-        {
-            Id = user.Id,
-            DisplayName = user.DisplayName,
-            Email = user.Email,
-            Token = tokenService.CreateToken(user)
-        };
+        return user.ToDto(tokenService);
     }
     // Helper method to see if an email address already exists
     private async Task<bool> EmailExists(string email)
@@ -61,12 +56,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
         {
             if(compustedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password!");
         }
-        return new UserDto
-        {
-            Id = user.Id,
-            DisplayName = user.DisplayName,
-            Email = user.Email,
-            Token = tokenService.CreateToken(user)
-        };
+
+        return user.ToDto(tokenService);
     }
 }
