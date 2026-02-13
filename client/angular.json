@@ -9,6 +9,10 @@
         "@schematics/angular:component": {
           "skipTests": true,
           "path": "scr"
+        },
+        "@schematics/angular:service": {
+          "skipTests": true,
+          "path": "src/core/services"
         }
       },
       "root": "",
