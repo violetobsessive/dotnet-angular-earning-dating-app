@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 })
 export class AccountService {
   private http = inject(HttpClient);
+  currentUser = signal<any>(null);
+
   baseUrl = environment.apiUrl;
 
   login(creds: any) {
