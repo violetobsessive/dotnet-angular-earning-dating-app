@@ -4,3 +4,4 @@
 - Backend: C# (.NET)
 - Frontend: TypeScript (Angular)
 - Database: SQL Lite
+- Auth: JWT
