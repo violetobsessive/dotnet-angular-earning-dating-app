@@ -3,10 +3,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { AccountService } from '../core/services/account-service';
 import { Nav } from '../layout/nav/nav';
+import { HomeComponent } from '../features/home/home';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav],
+  imports: [Nav, HomeComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
