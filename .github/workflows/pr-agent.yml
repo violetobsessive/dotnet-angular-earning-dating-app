@@ -1,0 +1,50 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  claude-review:
+    name: Claude Subagent Review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for diff
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            You are reviewing a pull request for a DatingApp built with:
+            - Backend: ASP.NET Core (.NET 9), EF Core 9, SQLite, JWT auth
+            - Frontend: Angular 20 (standalone components, signals, Tailwind + DaisyUI)
+
+            Review the changed files and check for:
+
+            **Backend (C#):**
+            - Middleware ordering bugs (UseAuthentication MUST come before UseAuthorization)
+            - Missing [Authorize] on protected endpoints in Controllers/
+            - Hardcoded secrets in appsettings*.json (especially TokenKey)
+            - Missing EF migrations for new Entity changes
+            - SQL injection risks (raw queries without parameters)
+            - Async/await correctness (.Result or .Wait() blocking calls)
+
+            **Frontend (Angular):**
+            - HttpClient calls missing error handling (catchError)
+            - Sensitive data stored in localStorage (passwords, full tokens)
+            - Missing loading states for async operations
+            - TypeScript 'any' usage that should be typed
+            - Memory leaks (subscriptions not unsubscribed / no takeUntilDestroyed)
+
+            **General:**
+            - New dependencies added without justification
+            - Test files deleted or skipped
+
+            Leave inline comments on specific lines. End with a summary: ✅ Approved / ⚠️ Needs changes.
